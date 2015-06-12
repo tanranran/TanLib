@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="toolbar" type="id"/>
+    <item name="pb_empty_loading" type="id"/>
+    <item name="ll_empty_loading" type="id"/>
+    <item name="tv_empty_loading" type="id"/>
+    <item name="ll_empty_null" type="id"/>
+    <item name="iv_empty_null" type="id"/>
+    <item name="tv_empty_null" type="id"/>
+    <item name="vs_empty_null" type="id"/>
+    <item name="ll_empty_error" type="id"/>
+    <item name="tv_empty_error" type="id"/>
+    <item name="iv_empty_error" type="id"/>
+    <item name="btn_empty_error" type="id"/>
+    <item name="vs_empty_error" type="id"/>
+    <item name="action_bar_fl" type="id"/>
+    <item name="actionbar_left_btn" type="id"/>
+    <item name="actionbar_right_btn" type="id"/>
+    <item name="action_bar_title_text" type="id"/>
+    <item name="tool_bar" type="id"/>
+</resources>

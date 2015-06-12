@@ -1,0 +1,43 @@
+<resources>
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="Theme.Basic" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowDisablePreview">true</item><!--去除过渡效果-->
+        <item name="windowActionModeOverlay">true</item><!--ActionMode占用title位置-->
+        <item name="android:windowActionBarOverlay">true</item><!--ActionMode占用title位置-->
+        <item name="android:windowBackground">@color/white</item><!--Activity 默认背景色-->
+        <item name="windowActionBar">false</item><!--去除默认Actionbar-->
+        <item name="android:windowNoTitle">true</item><!--去除默认title-->
+        <item name="colorPrimary">@color/toolbarColor</item><!--ActionBar 背景颜色-->
+        <item name="colorPrimaryDark">@color/statusColor</item><!--（状态栏底色）：在风格 (styles) 或是主题 (themes) 里进行设定。 -->
+        <item name="colorAccent">@color/accent_material_dark</item><!--各控制元件(如：check box、switch 或是 radoi) 被勾选 (checked) 或是选定 (selected) 的颜色。-->
+        <item name="colorControlNormal">@android:color/white</item><!-- actionbar各个图标颜色-->
+        <item name="android:textColorPrimary">@android:color/white</item><!-- 导航栏上的标题颜色-->
+        <item name="actionModeBackground">?colorPrimary</item><!--ationMode背景色 -->
+        <item name="android:windowIsTranslucent">true</item><!--Activity 透明-->
+        <item name="titleColor">@color/titleColor</item>
+        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:textColorSecondary">@color/abc_secondary_text_material_dark</item>
+    </style>
+    <style name="Theme.Basic.GREEN">
+        <item name="colorPrimary">#4CAF50</item>
+        <item name="colorPrimaryDark">#388E3C</item>
+        <item name="colorAccent">#4CAF50</item>
+    </style>
+    <style name="Theme.Basic.Night" >
+        <item name="colorPrimary">#232b38</item>
+        <item name="colorPrimaryDark">#191f29</item>
+        <item name="colorAccent">@color/accent_material_dark</item>
+        <item name="android:windowBackground">@color/background_night</item>
+        <item name="android:textColor">#9bafcc</item>
+        <item name="android:textColorPrimary">@color/abc_primary_text_material_dark</item>
+        <item name="android:textColorSecondary">@color/abc_secondary_text_material_dark</item>
+        <item name="titleColor">?android:textColor</item>
+        <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat</item>
+    </style>
+</resources>

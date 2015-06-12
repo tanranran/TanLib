@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TanLib</string>
+    <string name="empty_loading">页面加载中,请稍候</string>
+    <string name="empty_error">加载失败,请稍后刷新</string>
+    <string name="empty_null">暂时木有数据哦</string>
+    <string name="empty_error_btn">重新加载</string>
+    <string name="action_back">返回</string>
+</resources>

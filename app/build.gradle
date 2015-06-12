@@ -1,0 +1,48 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        applicationId "com.example.tan.myapplication"
+        minSdkVersion 14
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+//        renderscriptTargetApi 15
+//        renderscriptSupportModeEnabled true
+    }
+    //签名
+    signingConfigs{
+        release {
+            storeFile file("E:\\Android\\starsshoot_juyouchina1")
+            storePassword "juyouchina1"
+            keyAlias "星拍"
+            keyPassword "juyouchina1"
+        }
+    }
+    buildTypes {
+        debug {
+            // debug模式
+            minifyEnabled false//压缩APK
+            shrinkResources false//清除资源中无用的
+            signingConfig signingConfigs.release
+        }
+        release {
+            minifyEnabled true//压缩APK
+            shrinkResources true//清除资源中无用的
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+    // 移除lint检查的error
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':tanlib')
+}

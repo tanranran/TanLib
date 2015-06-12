@@ -1,0 +1,8 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.Basic">
+        <item name="colorAccent">@color/red</item><!--colorAccent会改变光标颜色、checkbox背景色等-->
+
+    </style>
+</resources>

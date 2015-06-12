@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="ButtonCustom">
+        <attr name="radius" format="reference|dimension" />
+        <!-- 角度-->
+        <attr name="dashed" format="boolean" />
+        <!-- 是否有边框-->
+        <attr name="dashed_unpress_color" format="reference|color" />
+        <!-- 边框点击前颜色-->
+        <attr name="dashed_press_color" format="reference|color" />
+        <!-- 边框点击后颜色-->
+        <attr name="dashed_width" format="dimension" />
+        <!-- 虚线宽度-->
+        <attr name="dashed_height" format="dimension" />
+        <!-- 虚线高度-->
+        <attr name="dashed_gap" format="reference|dimension" />
+        <!-- 虚线间隔-->
+        <attr name="press_color" format="reference|color" />
+        <!-- 按下颜色-->
+        <attr name="unpress_color" format="reference|color" />
+        <!-- 弹起(默认)颜色-->
+        <attr name="press_res" format="reference" />
+        <!-- 按下图片-->
+        <attr name="unpress_res" format="reference" />
+        <!-- 弹起(默认)图片-->
+        <attr name="src_press" format="reference" />
+        <!-- 按下logo,类似于imageview src-->
+        <attr name="src_unpress" format="reference" />
+        <!-- 弹起(默认)logo,类似于imageview src-->
+        <attr name="square" format="boolean" />
+        <!-- 长宽高一样-->
+        <attr name="txt_press_color" format="reference|color" />
+        <!-- 字体按下颜色-->
+        <attr name="txt_unpress_color" format="reference|color" />
+        <!-- 字体弹起(默认)颜色-->
+    </declare-styleable>
+    <attr name="titleColor" format="color|reference"/>
+    <attr name="toolbarTheme"  format="reference"/>
+    <attr name="toolbarPopupTheme"  format="reference"/>
+</resources>
