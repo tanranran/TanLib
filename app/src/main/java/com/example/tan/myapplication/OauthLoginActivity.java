@@ -28,7 +28,7 @@ public class OauthLoginActivity extends BaseActivity {
     }
     public void initView() {
         this.setTheme(mThemeId);
-        rootLayout.invalidate();
+        super.initView();
         textView=getView(R.id.tv_qq);
     }
 
