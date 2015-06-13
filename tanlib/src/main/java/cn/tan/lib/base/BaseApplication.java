@@ -20,7 +20,7 @@ public class BaseApplication extends Application{
 				.setMethodCount(2)            // default 2
 				.hideThreadInfo()             // default shown
 				.setLogLevel(isDebug()?LogLevel.FULL:LogLevel.NONE)  // default LogLevel.FULL
-				.setMethodOffset(2);
+				.setMethodOffset(0);
 	}
 	public static BaseApplication getInstance() {
 		return instance;

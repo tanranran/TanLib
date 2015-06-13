@@ -5,7 +5,7 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "com.example.tan.myapplication"
+        applicationId "com.tan.myapplication"
         minSdkVersion 14
         targetSdkVersion 22
         versionCode 1
@@ -27,13 +27,13 @@ android {
             // debug模式
             minifyEnabled false//压缩APK
             shrinkResources false//清除资源中无用的
-            signingConfig signingConfigs.release
+//            signingConfig signingConfigs.release
         }
         release {
             minifyEnabled true//压缩APK
             shrinkResources true//清除资源中无用的
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+//            signingConfig signingConfigs.release
         }
     }
     // 移除lint检查的error

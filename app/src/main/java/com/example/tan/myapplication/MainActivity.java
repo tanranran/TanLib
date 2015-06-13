@@ -1,15 +1,10 @@
 package com.example.tan.myapplication;
 
 import android.app.Activity;
-import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.widget.ImageView;
 
-import java.util.Timer;
+import com.tan.myapplication.R;
 
 public class MainActivity extends Activity {
 

@@ -16,20 +16,10 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
-    //签名
-    signingConfigs{
-        release {
-            storeFile file("E:\\Android\\starsshoot_juyouchina1")
-            storePassword "juyouchina1"
-            keyAlias "星拍"
-            keyPassword "juyouchina1"
-        }
-    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
         }
     }
 }

@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
+import com.tan.myapplication.R;
 
 import cn.tan.lib.base.BaseActivity;
 import cn.tan.lib.util.HttpUtils;
@@ -19,7 +20,6 @@ public class OauthLoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         this.setTheme(mThemeId);
         setContentView(R.layout.activity_oauth_login);
-        toorBar("4214124");
         initView();
         initData();
     }
@@ -27,9 +27,9 @@ public class OauthLoginActivity extends BaseActivity {
         textView.setText("fsafasfasfsafsa");
     }
     public void initView() {
-        this.setTheme(mThemeId);
-        super.initView();
+        toorBar("4214124");
         textView=getView(R.id.tv_qq);
+        super.initView();
     }
 
     public void onClick(View v) {

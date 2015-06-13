@@ -31,7 +31,7 @@ public class HttpUtils {
 	public  final String POST = "POST";
 	private String request_type = GET;
 	private String request_text = "";
-	private final SyncHttpClient syncHttpClient=new SyncHttpClient();
+	private static final SyncHttpClient syncHttpClient=new SyncHttpClient();
 	
 	public HttpUtils(String url) {
 		super();
@@ -126,7 +126,6 @@ public class HttpUtils {
 	/**
 	 * 同步的post请求
 	 * 
-	 * @return
 	 */
 	private String syncPost() {
 		syncHttpClient.post(url, syncRequest(), new AsyncHttpResponseHandler(Looper.getMainLooper()) {
@@ -168,12 +167,12 @@ public class HttpUtils {
 	}
 	private onDownLoader downLoader;
 	public interface onDownLoader{
-		public void onStart();
-		public void onSuccess(File file);
-		public void onProgres(long bytesWritten, long totalSize);
-		public void onFailure(int statusCode, Header[] headers, Throwable e, File file);
-		public void onCancel();
-		public void onFinish();
+		void onStart();
+		void onSuccess(File file);
+		void onProgres(long bytesWritten, long totalSize);
+		void onFailure(int statusCode, Header[] headers, Throwable e, File file);
+		void onCancel();
+		void onFinish();
 	}
 	public void setOnDownLoader(onDownLoader downLoader) {
 		this.downLoader = downLoader;

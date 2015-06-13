@@ -10,6 +10,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,7 +41,6 @@ public class BaseActivity extends AppCompatActivity implements IBaseActivity{
 		if (isUserEvent) {
 			EventBus.getDefault().register(context);
 		}
-
 		super.onCreate(savedInstanceState);
 	}
 	public void initView() {}
@@ -123,7 +123,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseActivity{
 		rootLayout.setFitsSystemWindows(false);
 	}
 	/** 点击空白隐藏软键盘 */
-	public boolean dispatchTouchEvent(MotionEvent ev) {
+	public boolean dispatchTouchEvent(@NonNull MotionEvent ev) {
 		if (isShowInput) {
 			if (ev.getAction() == MotionEvent.ACTION_DOWN) {
 				// 获得当前得到焦点的View，一般情况下就是EditText（特殊情况就是轨迹求或者实体案件会移动焦点）
