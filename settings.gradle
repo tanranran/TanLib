@@ -1,1 +1,1 @@
-include ':app', ':tanlib'
+include ':tanlib'

@@ -44,6 +44,9 @@ public class BaseActivity extends AppCompatActivity implements IBaseActivity{
 		super.onCreate(savedInstanceState);
 	}
 	public void initView() {}
+
+	public void initData() {
+	}
 	public void setContentView(View view) {
 		initSystemBar();
 		rootLayout.contentFrameLayout.removeAllViews();
@@ -153,11 +156,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseActivity{
 			int[] l = { 0, 0 };
 			v.getLocationInWindow(l);
 			int left = l[0], top = l[1], bottom = top + v.getHeight(), right = left+ v.getWidth();
-			if (event.getX() > left && event.getX() < right&& event.getY() > top && event.getY() < bottom) {
-				return false;
-			} else {
-				return true;
-			}
+			return !(event.getX() > left && event.getX() < right && event.getY() > top && event.getY() < bottom);
 		}
 		return false;
 	}

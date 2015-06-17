@@ -1,4 +1,4 @@
-package com.example.tan.myapplication;
+package cn.tan.lib.widget;
 
 import android.widget.ImageView;
 
@@ -72,4 +72,4 @@ public class SceneAnimation {
         }, pFrameNo == mLastFrameNo && mBreakDelay > 0 ? mBreakDelay
                 : mDuration);
     }
-};
+}

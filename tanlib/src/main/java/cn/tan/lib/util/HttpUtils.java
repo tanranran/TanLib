@@ -22,42 +22,48 @@ import cn.tan.lib.common.Constant;
 
 @SuppressWarnings("deprecation")
 public class HttpUtils {
+	private static final SyncHttpClient syncHttpClient = new SyncHttpClient();
+	public final String GET = "GET";
+	public final String POST = "POST";
+	public RangeFileAsyncHttpResponseHandler handler;
 	private String BASE_URL;
 	private int timeout = 30000;
 	private RequestParams params=new RequestParams();
 	private String url;
-	private boolean isParamsEncrypt = true;//是否加密 默认是true 
-	public  final String GET = "GET";
-	public  final String POST = "POST";
+	private boolean isParamsEncrypt = true;//是否加密 默认是true
 	private String request_type = GET;
 	private String request_text = "";
-	private static final SyncHttpClient syncHttpClient=new SyncHttpClient();
-	
+	private onDownLoader downLoader;
 	public HttpUtils(String url) {
 		super();
 		syncHttpClient.setCookieStore(new BasicCookieStore());
 		syncHttpClient.setConnectTimeout(3000);
 		syncHttpClient.setResponseTimeout(6000);
 		syncHttpClient.setMaxRetriesAndTimeout(3, 200);
-		syncHttpClient.addHeader(syncHttpClient.HEADER_ACCEPT_ENCODING, "identity");//关闭Gzip
+		syncHttpClient.addHeader(AsyncHttpClient.HEADER_ACCEPT_ENCODING, "identity");//关闭Gzip
 		this.url = url;
 	}
+
 	public HttpUtils setUrl(String url) {
 		this.url = BASE_URL+url;
 		return this;
 	}
+
 	public HttpUtils addParam(String name, String value) {
 		params.put(name, value);
 		return this;
 	}
+
 	public HttpUtils addParam(String name, int value) {
 		params.put(name, value);
 		return this;
 	}
+
 	public HttpUtils addParam(String name, InputStream stream) {
 		params.put(name, stream);
 		return this;
 	}
+
 	public HttpUtils addParam(String name, File stream) {
 		try {
 			params.put(name, stream);
@@ -66,14 +72,17 @@ public class HttpUtils {
 		}
 		return this;
 	}
+
 	public HttpUtils addParam(RequestParams params) {
 		this.params = params;
 		return this;
 	}
+
 	public HttpUtils setParamsEncrypt(boolean isParamsEncrypt) {
 		this.isParamsEncrypt = isParamsEncrypt;
 		return this;
 	}
+
 	public String getResponse() {
 		if (url == null) {
 			request_text=Constant.HTTP_URL_NULL;
@@ -89,33 +98,39 @@ public class HttpUtils {
 		Logger.d("HTPP请求结果" + request_text);
 		return request_text;
 	}
+
 	private String syncGet() {
 		syncHttpClient.get(url, syncRequest(), new AsyncHttpResponseHandler(Looper.getMainLooper()) {
 			// 请求开始之前被调用
 			public void onStart() {
 				super.onStart();
 			}
+
 			// 当响应的HTTP状态为 200 OK
 			public void onSuccess(int statusCode, Header[] headers, byte[] response) {
 				request_text = new String(response);
 			}
+
 			// 调用时，响应的HTTP状态为“4XX”（如401，403，404）
 			public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
 				Logger.e("HTPP请求失败statusCode:" + statusCode + " errorResponse:" + errorResponse + " Throwable:" + e.getMessage());
 				request_text = statusCode + "";
 			}
+
 			// 调用时，请求重试
 			public void onRetry(int retryNo) {
 				super.onRetry(retryNo);
 			}
+
 			// 已经 总共
 			public void onProgress(long bytesWritten, long totalSize) {
-				Logger.d("当前大小"+bytesWritten+"总大小"+totalSize);
-				super.onProgress(bytesWritten, totalSize);
+				Logger.d(String.format("Progress %d from %d (%2.0f%%)", bytesWritten, totalSize, (totalSize > 0) ? (bytesWritten * 1.0 / totalSize) * 100 : -1));
 			}
+
 			public void onCancel() {
 				super.onCancel();
 			}
+
 			// 请求结束 成功/失败后的方法
 			public void onFinish() {
 				super.onFinish();
@@ -123,9 +138,10 @@ public class HttpUtils {
 		});
 		return request_text;
 	}
+
 	/**
 	 * 同步的post请求
-	 * 
+	 *
 	 */
 	private String syncPost() {
 		syncHttpClient.post(url, syncRequest(), new AsyncHttpResponseHandler(Looper.getMainLooper()) {
@@ -152,7 +168,7 @@ public class HttpUtils {
 			@Override
 			public void onProgress(long bytesWritten, long totalSize) {
 				if (downLoader != null) {
-					super.onProgress(bytesWritten, totalSize);
+					Logger.d(String.format("Progress %d from %d (%2.0f%%)", bytesWritten, totalSize, (totalSize > 0) ? (bytesWritten * 1.0 / totalSize) * 100 : -1));
 					if (bytesWritten <= totalSize) {
 						downLoader.onProgres(bytesWritten, totalSize);
 					}
@@ -165,15 +181,7 @@ public class HttpUtils {
 		});
 		return request_text;
 	}
-	private onDownLoader downLoader;
-	public interface onDownLoader{
-		void onStart();
-		void onSuccess(File file);
-		void onProgres(long bytesWritten, long totalSize);
-		void onFailure(int statusCode, Header[] headers, Throwable e, File file);
-		void onCancel();
-		void onFinish();
-	}
+
 	public void setOnDownLoader(onDownLoader downLoader) {
 		this.downLoader = downLoader;
 	}
@@ -197,7 +205,7 @@ public class HttpUtils {
 		p.put("platform", "Android");
 		return p;
 	}
-	public RangeFileAsyncHttpResponseHandler handler;
+
 	public AsyncHttpClient downloader(String url, String name) {
 		Logger.d("下载地址" + url + "下载名称" + name);
 		AsyncHttpClient client = new AsyncHttpClient();
@@ -248,5 +256,19 @@ public class HttpUtils {
 		};
 		client.get(url, handler);
 		return client;
+	}
+
+	public interface onDownLoader {
+		void onStart();
+
+		void onSuccess(File file);
+
+		void onProgres(long bytesWritten, long totalSize);
+
+		void onFailure(int statusCode, Header[] headers, Throwable e, File file);
+
+		void onCancel();
+
+		void onFinish();
 	}
 }
