@@ -21,8 +21,18 @@
         <item name="titleColor">@color/titleColor</item>
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="android:textColor">@android:color/darker_gray</item>
-        <item name="android:textColorSecondary">@color/abc_secondary_text_material_dark</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="GalaxyZooThemeToolbarDarkOverflow">
+        <!--<item name="android:textColorPrimary">@color/red</item>title 颜色-->
+        <!-- <item name="colorControlNormal">@color/yellow</item>actionbar各个图标颜色-->
+        <item name="android:colorBackground">?colorPrimary</item>
+        <!--背景色-->
+        <item name="android:textColor">@color/green</item>
+        <!-- <item name="actionOverflowButtonStyle">@android:style/Widget.ActionButton.Overflow</item>更多按钮-->
+        <!--<item name="actionModeBackground">@color/green</item>actionmode 背景色-->
+        <!--<item name="selectableItemBackground">@color/red</item>title 图标选中后颜色-->
     </style>
     <style name="Theme.Basic.GREEN">
         <item name="colorPrimary">#4CAF50</item>

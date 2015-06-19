@@ -33,19 +33,19 @@ android {
         }
     }
     buildTypes {
-        debug {
-            buildConfigField "boolean", "LOG_DEBUG", "false"
-            minifyEnabled false//混淆编译
-            shrinkResources false//清除资源中无用的
-            zipAlignEnabled false //是否zip对齐
+//        debug {
+//            buildConfigField "boolean", "LOG_DEBUG", "false"
+//            minifyEnabled false//混淆编译
+//            shrinkResources false//清除资源中无用的
+//            zipAlignEnabled false //是否zip对齐
 //            multiDexEnabled false// dex突破65535的限制
 //            signingConfig signingConfigs.release
-        }
+//        }
         release {
-            buildConfigField "boolean", "LOG_DEBUG", "false"
-            minifyEnabled true//混淆编译
-            shrinkResources true//清除资源中无用的
-            zipAlignEnabled true //是否zip对齐
+//            buildConfigField "boolean", "LOG_DEBUG", "false"
+//            minifyEnabled true//混淆编译
+//            shrinkResources true//清除资源中无用的
+//            zipAlignEnabled true //是否zip对齐
 //            multiDexEnabled false// dex突破65535的限制
 //            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -67,9 +67,9 @@ android {
 //        }
     }
     // 移除lint检查的error
-    lintOptions {
-        abortOnError false
-    }
+//    lintOptions {
+//        abortOnError false
+//    }
 //    productFlavors {
 //        wandoujia {}
 //        _360 {}
