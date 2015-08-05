@@ -1,14 +1,17 @@
 package cn.tan.lib.util;
 
-import java.util.ArrayList;
-
-
 import android.app.Activity;
+
+import java.util.ArrayList;
 
 public class ActivityUtil {
 	private volatile static ActivityUtil instance;
 	private ArrayList<Activity> activityList = new ArrayList<Activity>();
 	private Activity nowActivity = null;//当前Activity
+
+	protected ActivityUtil() {
+	}
+
 	public static ActivityUtil getInstance() {//采用双重检查加锁实例化单件
 		if(instance == null){//第一次检查
 	        synchronized (ActivityUtil.class) {
@@ -19,7 +22,7 @@ public class ActivityUtil {
 	      }
 	      return instance;
 	}
-	protected ActivityUtil() {}
+
 	/**
 	 * activity 创建
 	 * 
@@ -32,20 +35,23 @@ public class ActivityUtil {
 		activityList.add(0, activity);
 		setNowActivity(activity);
 	}
+
+	/**
+	 * 获取当前activity
+	 *
+	 * @return
+	 */
+	public Activity getNowActivity() {
+		return this.nowActivity;
+	}
+
 	/**
 	 * 设置当前的activity
 	 */
 	private void setNowActivity(Activity activity) {
 		nowActivity = activity;
 	}
-	/**
-	 * 获取当前activity
-	 * 
-	 * @return
-	 */
-	public Activity getNowActivity() {
-		return this.nowActivity;
-	}
+
 	/**
 	 * 设置当前的activity
 	 */

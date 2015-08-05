@@ -1,8 +1,5 @@
 package cn.tan.lib.util;
 
-import cn.tan.lib.R;
-import cn.tan.lib.base.BaseApplication;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -12,8 +9,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import cn.tan.lib.R;
+import cn.tan.lib.base.BaseApplication;
+
 public class ToastUtil {
 
+	public static Toast mToast;
 	public static void showToast(int resID) {
 		showToast(BaseApplication.getInstance(), Toast.LENGTH_SHORT, resID);
 	}
@@ -67,31 +68,31 @@ public class ToastUtil {
 
 	public static void showToast(final Context ctx, final int duration,
 			final String text) {
-		final Toast toast = Toast.makeText(ctx, text, duration);
-		toast.show();
+		mToast = Toast.makeText(ctx, text, duration);
+		mToast.show();
 	}
 
 	public static void showToastView(final Context ctx, final int duration,
 			final String text) {
-		final Toast toast = Toast.makeText(ctx, text, duration);
+		mToast = Toast.makeText(ctx, text, duration);
 		View view = RelativeLayout.inflate(ctx, R.layout.layout_toast, null);
 		TextView mNextView = (TextView) view.findViewById(R.id.toast_name);
-		toast.setView(view);
+		mToast.setView(view);
 		mNextView.setText(text);
-		toast.setGravity(Gravity.CENTER, 0, 0);
-		toast.show();
+		mToast.setGravity(Gravity.CENTER, 0, 0);
+		mToast.show();
 	}
 
 	public static void showToast(final Context ctx, final String text,
 			Drawable left, Drawable top, Drawable right, Drawable bottom) {
-		final Toast toast = Toast.makeText(ctx, text, Toast.LENGTH_LONG);
+		mToast = Toast.makeText(ctx, text, Toast.LENGTH_LONG);
 		View view = RelativeLayout.inflate(ctx, R.layout.layout_toast, null);
 		TextView mNextView = (TextView) view.findViewById(R.id.toast_name);
 		mNextView.setCompoundDrawablesWithIntrinsicBounds(left, top, right,bottom);
-		toast.setView(view);
-		toast.setGravity(Gravity.CENTER, 0, 0);
+		mToast.setView(view);
+		mToast.setGravity(Gravity.CENTER, 0, 0);
 		mNextView.setText(text);
-		toast.show();
+		mToast.show();
 	}
 
 	/** 在UI线程运行弹出 */

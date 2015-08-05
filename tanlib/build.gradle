@@ -33,23 +33,24 @@ android {
         }
     }
     buildTypes {
-        debug {
-            buildConfigField "boolean", "LOG_DEBUG", "false"
-            minifyEnabled false//混淆编译
-            shrinkResources false//清除资源中无用的
-            zipAlignEnabled false //是否zip对齐
+//        debug {
+//            buildConfigField "boolean", "LOG_DEBUG", "false"
+//            minifyEnabled true//混淆编译
+//            shrinkResources true//清除资源中无用的
+//            zipAlignEnabled true //是否zip对齐
+//            multiDexEnabled false// dex突破65535的限制
+//            signingConfig signingConfigs.debug
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        }
+//        release {
+//            buildConfigField "boolean", "LOG_DEBUG", "false"
+//            minifyEnabled true//混淆编译
+//            shrinkResources true//清除资源中无用的
+//            zipAlignEnabled true //是否zip对齐
 //            multiDexEnabled false// dex突破65535的限制
 //            signingConfig signingConfigs.release
-        }
-        release {
-            buildConfigField "boolean", "LOG_DEBUG", "false"
-            minifyEnabled true//混淆编译
-            shrinkResources true//清除资源中无用的
-            zipAlignEnabled true //是否zip对齐
-//            multiDexEnabled false// dex突破65535的限制
-//            signingConfig signingConfigs.release
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        }
         //        applicationVariants.all { variant ->
 //            variant.outputs.each { output ->
 //                def outputFile = output.outputFile
@@ -66,10 +67,10 @@ android {
 //            }
 //        }
     }
-    // 移除lint检查的error
-    lintOptions {
-        abortOnError false
-    }
+    //移除lint检查的error
+//    lintOptions {
+//        abortOnError false
+//    }
 //    productFlavors {
 //        wandoujia {}
 //        _360 {}
@@ -82,15 +83,41 @@ android {
 //    productFlavors.all { flavor ->
 //        flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
 //    }
+    dexOptions {
+        incremental true //打开dex增量编译
+        preDexLibraries = false
+        jumboMode = false
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/MANIFEST.MF'
+        exclude 'META-INF/CERT.SF'
+        exclude 'META-INF/CERT.RSA'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/ASL2.0'
+    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.android.support:support-v4:22.2.0'
-    compile 'com.android.support:recyclerview-v7:22.+'
-    compile 'com.android.support:design:22.2.0'
-    compile 'com.loopj.android:android-async-http:1.4.7'
+    compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.android.support:support-v4:22.2.1'
+//    compile 'com.android.support:design:22.2.1'
+//    compile 'com.android.support:percent:22.2.0'
+//    compile 'com.github.chrisbanes.photoview:library:1.2.3'
+    compile 'com.loopj.android:android-async-http:1.4.8'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'com.orhanobut:logger:1.10'
+    compile 'com.alibaba:fastjson:1.1.45.android'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
+//    compile 'com.android.support:recyclerview-v7:22.2.1'
+    //compile 'com.klinkerapps:link_builder:1.1.0@aar' 字体变色
 }

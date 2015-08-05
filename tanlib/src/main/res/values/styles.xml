@@ -4,25 +4,47 @@
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
+    <style name="Theme.Style" parent="Theme.Basic">
+
+    </style>
+
     <style name="Theme.Basic" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <!--去除默认Actionbar-->
         <item name="android:windowDisablePreview">true</item><!--去除过渡效果-->
         <item name="windowActionModeOverlay">true</item><!--ActionMode占用title位置-->
         <item name="android:windowActionBarOverlay">true</item><!--ActionMode占用title位置-->
         <item name="android:windowBackground">@color/white</item><!--Activity 默认背景色-->
-        <item name="windowActionBar">false</item><!--去除默认Actionbar-->
-        <item name="android:windowNoTitle">true</item><!--去除默认title-->
-        <item name="colorPrimary">@color/toolbarColor</item><!--ActionBar 背景颜色-->
-        <item name="colorPrimaryDark">@color/statusColor</item><!--（状态栏底色）：在风格 (styles) 或是主题 (themes) 里进行设定。 -->
+        <!--<item name="colorPrimary">@color/toolbarColor</item>&lt;!&ndash;ActionBar 背景颜色&ndash;&gt;-->
+        <!--<item name="colorPrimaryDark">@color/toolbarColor</item>&lt;!&ndash;（状态栏底色）：在风格 (styles) 或是主题 (themes) 里进行设定。 &ndash;&gt;-->
         <item name="colorAccent">@color/accent_material_dark</item><!--各控制元件(如：check box、switch 或是 radoi) 被勾选 (checked) 或是选定 (selected) 的颜色。-->
         <item name="colorControlNormal">@android:color/white</item><!-- actionbar各个图标颜色-->
-        <item name="android:textColorPrimary">@android:color/white</item><!-- 导航栏上的标题颜色-->
+        <!--<item name="android:textColorPrimary">@android:color/white</item>&lt;!&ndash; 导航栏上的标题颜色&ndash;&gt;-->
         <item name="actionModeBackground">?colorPrimary</item><!--ationMode背景色 -->
-        <item name="android:windowIsTranslucent">true</item><!--Activity 透明-->
+        <item name="android:windowIsTranslucent">false</item>
+        <!--Activity 透明-->
         <item name="titleColor">@color/titleColor</item>
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="android:textColor">@android:color/darker_gray</item>
-        <item name="android:textColorSecondary">@color/abc_secondary_text_material_dark</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <!--<item name="colorControlHighlight">@color/yellow</item>&lt;!&ndash;涟漪颜色&ndash;&gt;-->
+    </style>
+
+    <style name="GalaxyZooThemeToolbarDarkOverflow">
+        <!--<item name="android:textColorPrimary">@color/red</item>title 颜色-->
+        <!-- <item name="colorControlNormal">@color/yellow</item>actionbar各个图标颜色-->
+        <!--<item name="android:colorBackground">?colorPrimary</item>&lt;!&ndash;背景色&ndash;&gt;-->
+        <!--<item name="android:textColor">@color/white</item>&lt;!&ndash;title字体颜色&ndash;&gt;-->
+
+        <!-- <item name="actionOverflowButtonStyle">@android:style/Widget.ActionButton.Overflow</item>更多按钮-->
+        <!--<item name="actionModeBackground">@color/green</item>actionmode 背景色-->
+        <!--<item name="selectableItemBackground">@color/red</item>title 图标选中后颜色-->
+        <!--<item name="selectableItemBackgroundBorderless">@color/green</item>-->
+    </style>
+
+    <style name="PopupMenu" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:colorBackground">@color/red</item>
+        <item name="android:textColor">@color/yellow</item>
     </style>
     <style name="Theme.Basic.GREEN">
         <item name="colorPrimary">#4CAF50</item>

@@ -1,0 +1,10 @@
+<resources>
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="Theme.Style" parent="Theme.Basic">
+        <item name="android:elevation">0dp</item>
+    </style>
+</resources>

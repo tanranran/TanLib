@@ -1,23 +1,16 @@
 package cn.tan.lib.util;
 
 
-import cn.tan.lib.base.BaseApplication;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
+import cn.tan.lib.base.BaseApplication;
+
 public final class PreferencesUtils {
 
 	private static final String PERFERENCE="XMPP";
-	/** 清空数据 */
-	public static void reset(final Context ctx) {
-		Editor edit = PreferenceManager.getDefaultSharedPreferences(ctx).edit();
-		edit.clear();
-		edit.commit();
-	}
-
 	private SharedPreferences mPreference;
 
 	public PreferencesUtils() {
@@ -28,25 +21,23 @@ public final class PreferencesUtils {
 		this.mPreference = context.getApplicationContext().getSharedPreferences(PERFERENCE, Context.MODE_PRIVATE);
 	}
 
-	public String get(String key, String defValue) {
-		return mPreference.getString(key, defValue);
-	}
-
-	public boolean get(String key, boolean defValue) {
-		return mPreference.getBoolean(key, defValue);
-	}
-
-	public int get(String key, int defValue) {
-		return mPreference.getInt(key, defValue);
-	}
-
-	public float get(String key, float defValue) {
-		return mPreference.getFloat(key, defValue);
+	/**
+	 * 清空数据
+	 */
+	public static void reset(final Context ctx) {
+		Editor edit = PreferenceManager.getDefaultSharedPreferences(ctx).edit();
+		edit.clear();
+		edit.commit();
 	}
 
 	public static String getString(String key, String defValue) {
 		if (BaseApplication.getInstance() != null) {
-			return PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance()).getString(key, defValue);
+			try {
+				return DESUtil.decrypt(PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance()).getString(key, defValue), DESUtil.KEY_NAME);
+//				return PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance()).getString(key, defValue);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return defValue;
 	}
@@ -133,7 +124,7 @@ public final class PreferencesUtils {
 		}
 		return defValue;
 	}
-	
+
 	public static void putLongProcess(String key, long value) {
 		if (BaseApplication.getInstance() != null) {
 			SharedPreferences sharedPreferences = BaseApplication.getInstance().getSharedPreferences("preference_mu", Context.MODE_MULTI_PROCESS);
@@ -142,7 +133,7 @@ public final class PreferencesUtils {
 			editor.commit();
 		}
 	}
-	
+
 	public static long getLongProcess(String key, long defValue) {
 		if (BaseApplication.getInstance() != null) {
 			SharedPreferences sharedPreferences = BaseApplication.getInstance().getSharedPreferences("preference_mu", Context.MODE_MULTI_PROCESS);
@@ -166,13 +157,17 @@ public final class PreferencesUtils {
 		}
 		return false;
 	}
-
+	
 	public static void putString(String key, String value) {
 		if (BaseApplication.getInstance() != null) {
-			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
-			Editor editor = sharedPreferences.edit();
-			editor.putString(key, value);
-			editor.commit();
+			try {
+				SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
+				Editor editor = sharedPreferences.edit();
+				editor.putString(key, DESUtil.encrypt(value, DESUtil.KEY_NAME));
+				editor.commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -205,7 +200,7 @@ public final class PreferencesUtils {
 
 	public static void remove(String... keys) {
 		if (keys != null && BaseApplication.getInstance() != null) {
-			
+
 			SharedPreferences sharedPreferences = BaseApplication.getInstance().getSharedPreferences("preference_mu", Context.MODE_MULTI_PROCESS);
 			Editor editor = sharedPreferences.edit();
 			for (String key : keys) {
@@ -213,5 +208,21 @@ public final class PreferencesUtils {
 			}
 			editor.commit();
 		}
+	}
+
+	public String get(String key, String defValue) {
+		return mPreference.getString(key, defValue);
+	}
+
+	public boolean get(String key, boolean defValue) {
+		return mPreference.getBoolean(key, defValue);
+	}
+
+	public int get(String key, int defValue) {
+		return mPreference.getInt(key, defValue);
+	}
+
+	public float get(String key, float defValue) {
+		return mPreference.getFloat(key, defValue);
 	}
 }

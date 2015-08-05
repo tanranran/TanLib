@@ -40,7 +40,6 @@ public class NetUtils {
 	 */
 	public static boolean isConnected(Context context) {
 		NetworkInfo net = getConnManager(context).getActiveNetworkInfo();
-		Logger.d("网络状态" + (net != null && net.isConnected()));
 		return net != null && net.isConnected();
 	}
 

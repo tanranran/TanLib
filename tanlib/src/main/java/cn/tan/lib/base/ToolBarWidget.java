@@ -7,8 +7,12 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import java.lang.reflect.Field;
 
 import cn.tan.lib.R;
+import cn.tan.lib.util.ActivityUtil;
 import cn.tan.lib.util.InputUtil;
 
 /**
@@ -17,6 +21,9 @@ import cn.tan.lib.util.InputUtil;
 public class ToolBarWidget extends FrameLayout {
 
     public Toolbar tool_bar;
+
+    public TextView titleTextView;
+
     public ToolBarWidget(Context context) {
         this(context, null);
     }
@@ -27,28 +34,38 @@ public class ToolBarWidget extends FrameLayout {
 
     public ToolBarWidget(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        inflate(getContext(), R.layout.layout_tool_bar,this);
-        tool_bar= (Toolbar) findViewById(R.id.tool_bar);
+        inflate(getContext(), R.layout.layout_tool_bar, this);
+        tool_bar = (Toolbar) findViewById(R.id.tool_bar);
     }
-    public ToolBarWidget setTitle(String title) {
-        tool_bar.setTitle(title);
-        return this;
-    }
+
     public static ToolBarWidget initToolBar(final AppCompatActivity activity, String title) {
         LinearLayout actionBarLayout = (LinearLayout) activity.getWindow().getDecorView().findViewWithTag(BaseRootLayout.ACTION_BAR_TAG);
-        ToolBarWidget toolBarWidget=new ToolBarWidget(activity);
+        ToolBarWidget toolBarWidget = new ToolBarWidget(activity);
         actionBarLayout.removeAllViews();
         actionBarLayout.setVisibility(View.VISIBLE);
-        actionBarLayout.addView(toolBarWidget,new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+        actionBarLayout.addView(toolBarWidget, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         toolBarWidget.tool_bar.setTitle(title);
         activity.setSupportActionBar(toolBarWidget.tool_bar);
         toolBarWidget.tool_bar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         toolBarWidget.tool_bar.setNavigationOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 InputUtil.getInstance(activity).hideKeyboard();
-                activity.finish();
+                ActivityUtil.getInstance().setOnActivityDestroy(activity);
             }
         });
+        TextView titleTextView = toolBarWidget.titleTextView;
+        try {
+            Field f = toolBarWidget.tool_bar.getClass().getDeclaredField("mTitleTextView");
+            f.setAccessible(true);
+            titleTextView = (TextView) f.get(toolBarWidget.tool_bar);
+        } catch (NoSuchFieldException e) {
+        } catch (IllegalAccessException e) {
+        }
         return toolBarWidget;
+    }
+
+    public ToolBarWidget setTitle(String title) {
+        tool_bar.setTitle(title);
+        return this;
     }
 }

@@ -5,6 +5,9 @@
     <color name="black">#000000</color>
     <color name="red">#FF0000</color>
     <color name="green">#00CF00</color>
+    <color name="yellow">#EEEE00</color>
+    <color name="purple">#912CEE</color>
+    <color name="blue">#1E90FF</color>
     <color name="statusColor">#11659a</color>
     <color name="toolbarColor">#1473af</color>
     <color name="titleColor">#ffffff</color>

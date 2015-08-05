@@ -1,36 +1,27 @@
 package cn.tan.lib.util;
 
-import java.io.File;  
+import android.os.Environment;
+import android.os.StatFs;
 
-import android.os.Environment;  
-import android.os.StatFs;  
+import java.io.File;
   
 /** 
  * SD卡相关的辅助类 
- *  
- *  
- *  
- */  
+ *
+ */
 public class SDCardUtils  
 {  
-    private SDCardUtils()  
-    {  
-        /* cannot be instantiated */  
-        throw new UnsupportedOperationException("cannot be instantiated");  
-    }  
-  
+
     /** 
      * 判断SDCard是否可用 
      *  
      * @return 
      */  
     public static boolean isSDCardEnable()  
-    {  
-        return Environment.getExternalStorageState().equals(  
-                Environment.MEDIA_MOUNTED);  
-  
-    }  
-  
+    {
+        return Environment.MEDIA_REMOVED.equals(Environment.getExternalStorageState());
+
+    }
     /** 
      * 获取SD卡路径 
      *  
@@ -48,13 +39,9 @@ public class SDCardUtils
      * @return 
      */  
     public static long getSDCardAllSize() {  
-        if (isSDCardEnable()) {  
-            StatFs stat = new StatFs(getSDCardPath());  
-            // 获取空闲的数据块的数量  
-            long availableBlocks = (long) stat.getAvailableBlocks() - 4;  
-            // 获取单个数据块的大小（byte）
-            int mBlockSize = stat.getBlockSize();
-            return mBlockSize* availableBlocks;
+        if (isSDCardEnable()) {
+            StatFs stat = new StatFs(getSDCardPath());
+            return stat.getAvailableBlocks() * stat.getBlockSize();
         }  
         return 0;  
     }  

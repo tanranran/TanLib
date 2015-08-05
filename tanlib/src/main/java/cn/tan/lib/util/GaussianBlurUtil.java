@@ -3,9 +3,8 @@ package cn.tan.lib.util;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
-import android.support.v8.renderscript.Allocation;
-import android.support.v8.renderscript.RenderScript;
-import android.support.v8.renderscript.ScriptIntrinsicBlur;
+import android.renderscript.Allocation;
+import android.renderscript.RenderScript;
 
 public class GaussianBlurUtil {
 	static {
@@ -40,12 +39,12 @@ public class GaussianBlurUtil {
 				Allocation.USAGE_GRAPHICS_TEXTURE);
 		Allocation outAlloc = Allocation.createFromBitmap(rs, output);
 
-		ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create(rs,
-				inAlloc.getElement()); // Element.U8_4(rs));
-		script.setRadius(getRadius());
-		script.setInput(inAlloc);
-		script.forEach(outAlloc);
-		outAlloc.copyTo(output);
+//		ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create(rs,
+//				inAlloc.getElement()); // Element.U8_4(rs));
+//		script.setRadius(getRadius());
+//		script.setInput(inAlloc);
+//		script.forEach(outAlloc);
+//		outAlloc.copyTo(output);
 
 		rs.destroy();
 
@@ -54,10 +53,10 @@ public class GaussianBlurUtil {
 
 	public Bitmap scaleDown(Bitmap input) {
 		input=RGB565toARGB888(input);
-		float ratio = Math.min((float) getMaxImageSize() / input.getWidth(),
-				(float) getMaxImageSize() / input.getHeight());
-		int width = Math.round((float) ratio * input.getWidth());
-		int height = Math.round((float) ratio * input.getHeight());
+		float ratio = Math.min(getMaxImageSize() / input.getWidth(),
+				getMaxImageSize() / input.getHeight());
+		int width = Math.round(ratio * input.getWidth());
+		int height = Math.round(ratio * input.getHeight());
 
 		return Bitmap.createScaledBitmap(input, width, height, true);
 	}
