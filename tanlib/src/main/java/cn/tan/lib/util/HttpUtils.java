@@ -14,10 +14,13 @@ import org.apache.http.Header;
 import org.apache.http.client.params.CookiePolicy;
 import org.apache.http.client.params.HttpClientParams;
 import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.message.BasicHeader;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.tan.lib.base.BaseApplication;
 import cn.tan.lib.common.Constant;
@@ -54,6 +57,7 @@ public class HttpUtils {
 		asyncHttpClient.setConnectTimeout(3000);
 		asyncHttpClient.setResponseTimeout(6000);
 		asyncHttpClient.setMaxRetriesAndTimeout(3, 200);
+//		asyncHttpClient.setUserAgent(new WebView(BaseApplication.getInstance()).getSettings().getUserAgentString());
 //		asyncHttpClient.addHeader(AsyncHttpClient.HEADER_ACCEPT_ENCODING, "identity");//关闭Gzip
 		asyncHttpClient.setCookieStore(myCookieStore);
 		HttpClientParams.setCookiePolicy(asyncHttpClient.getHttpClient().getParams(), CookiePolicy.BROWSER_COMPATIBILITY);
@@ -223,7 +227,10 @@ public class HttpUtils {
 	 * @return
 	 */
 	private String asyncGet() {
-		asyncHttpClient.get(url, syncRequest(), new AsyncHttpResponseHandler(Looper.getMainLooper()) {
+		List<Header> headers = new ArrayList<Header>();
+		headers.add(new BasicHeader("xxx", "oo0"));
+		Header[] h = headers.toArray(new Header[headers.size()]);
+		asyncHttpClient.get(BaseApplication.getInstance(), url, h, syncRequest(), new AsyncHttpResponseHandler(Looper.getMainLooper()) {
 			public void onStart() {
 				super.onStart();
 				if (httpResponse != null) {

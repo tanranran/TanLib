@@ -12,7 +12,10 @@ import android.widget.LinearLayout;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import org.apache.http.Header;
+
 import cn.tan.lib.base.BaseActivity;
+import cn.tan.lib.util.HttpUtils;
 import cn.tan.lib.util.ImageLoaderUtil;
 import cn.tan.lib.util.ImageUtil;
 import cn.tan.lib.util.IntentUtil;
@@ -104,14 +107,44 @@ public class MainActivity extends BaseActivity {
     private int themeRes = R.style.Theme_Basic_Night;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_plus_one);
+        setContentView(R.layout.activity_main);
 
-//        toorBar("");
-//        getView(R.id.btn).setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-////                IntentUtil.startGallery(context);
-//            }
-//        });
+        toorBar("");
+        getView(R.id.btn).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                new HttpUtils("http://www.baidu.com").setOnHttpResponse(new HttpUtils.HttpResponse() {
+                    @Override
+                    public void onStart() {
+
+                    }
+
+                    @Override
+                    public void onSuccess(String text) {
+
+                    }
+
+                    @Override
+                    public void onProgres(long bytesWritten, long totalSize) {
+
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, Throwable e, String text) {
+
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+
+                    }
+                }).getResponse();
+            }
+        });
 
 //        RecyclerView mRecyclerView=getView(R.id.my_recycler_view);
 //        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,
