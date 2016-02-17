@@ -1,18 +1,14 @@
 apply plugin: 'com.android.library'
-//def packageTime() {
-//    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
-//}
+
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 23
+    buildToolsVersion '23.0.2'
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 22
+        minSdkVersion 15
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
-//        resConfigs "en", "fr"
-//        manifestPlaceholders = [UMENG_CHANNEL_VALUE: "umeng"]
     }
     sourceSets {
         main {
@@ -20,96 +16,12 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
-    //签名
-    signingConfigs {
-        debug {
-            // No debug config
-        }
-        release {
-            storeFile file("E:\\Android\\starsshoot_juyouchina1")
-            storePassword "juyouchina1"
-            keyAlias "星拍"
-            keyPassword "juyouchina1"
-        }
-    }
-    buildTypes {
-//        debug {
-//            buildConfigField "boolean", "LOG_DEBUG", "false"
-//            minifyEnabled true//混淆编译
-//            shrinkResources true//清除资源中无用的
-//            zipAlignEnabled true //是否zip对齐
-//            multiDexEnabled false// dex突破65535的限制
-//            signingConfig signingConfigs.debug
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//        }
-//        release {
-//            buildConfigField "boolean", "LOG_DEBUG", "false"
-//            minifyEnabled true//混淆编译
-//            shrinkResources true//清除资源中无用的
-//            zipAlignEnabled true //是否zip对齐
-//            multiDexEnabled false// dex突破65535的限制
-//            signingConfig signingConfigs.release
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//        }
-        //        applicationVariants.all { variant ->
-//            variant.outputs.each { output ->
-//                def outputFile = output.outputFile
-//                if (outputFile != null && outputFile.name.endsWith('.apk')) {
-//                    File outputDirectory = new File(outputFile.parent);
-//                    def fileName
-//                    if (variant.buildType.name == "release") {
-//                        fileName = "app_v${defaultConfig.versionName}_${packageTime()}_${variant.productFlavors[0].name}.apk"
-//                    } else {
-//                        fileName = "app_v${defaultConfig.versionName}_${packageTime()}_beta.apk"
-//                    }
-//                    output.outputFile = new File(outputDirectory, fileName)
-//                }
-//            }
-//        }
-    }
-    //移除lint检查的error
-//    lintOptions {
-//        abortOnError false
-//    }
-//    productFlavors {
-//        wandoujia {}
-//        _360 {}
-//        baidu {}
-//        xiaomi {}
-//        tencent {}
-//        taobao {}
-//    }
-
-//    productFlavors.all { flavor ->
-//        flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
-//    }
-    dexOptions {
-        incremental true //打开dex增量编译
-        preDexLibraries = false
-        jumboMode = false
-    }
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES.txt'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/MANIFEST.MF'
-        exclude 'META-INF/CERT.SF'
-        exclude 'META-INF/CERT.RSA'
-        exclude 'META-INF/notice.txt'
-        exclude 'META-INF/license.txt'
-        exclude 'META-INF/dependencies.txt'
-        exclude 'META-INF/LGPL2.1'
-        exclude 'META-INF/ASL2.0'
-    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:22.2.1'
-    compile 'com.android.support:support-v4:22.2.1'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:support-v4:23.1.1'
 //    compile 'com.android.support:design:22.2.1'
 //    compile 'com.android.support:percent:22.2.0'
 //    compile 'com.github.chrisbanes.photoview:library:1.2.3'
