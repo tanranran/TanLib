@@ -101,12 +101,10 @@ public class MainActivity extends BaseActivity {
             "http://cdn.eyeem.com/thumb/h/60/088705c6e4b2b78a75ac131844883909ce5d02c5-1426222771",
             "http://cdn.eyeem.com/thumb/h/60/020df6440692a0dcc2aece0bf829761dace23455-1426216257"
     };
-    private int themeRes = R.style.Theme_Basic_Night;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        toorBar("");
+        actionBar("测试");
         getView(R.id.btn).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 

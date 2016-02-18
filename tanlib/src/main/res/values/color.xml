@@ -14,4 +14,5 @@
     <color name="background_night">#202733</color>
     <color name="default_shadow_color">#88757575</color>
     <color name="default_fill_color">#ffffff</color>
+    <color name="lineColor">#ADAAAA</color>
 </resources>

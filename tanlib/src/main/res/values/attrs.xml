@@ -36,6 +36,7 @@
         <!-- 字体弹起(默认)颜色-->
     </declare-styleable>
     <attr name="titleColor" format="color|reference"/>
+    <attr name="titleBg" format="color|reference"/>
     <attr name="toolbarTheme"  format="reference"/>
     <attr name="toolbarPopupTheme"  format="reference"/>
     <declare-styleable name="DrawShadowFrameLayout">

@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <FrameLayout
         android:id="@id/action_bar_fl"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?colorPrimary" >
+        android:background="?titleBg" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -16,7 +13,7 @@
             android:gravity="center_vertical"
             android:orientation="horizontal" >
 
-            <Button
+            <TextView
                 android:id="@id/actionbar_left_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -34,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
-            <Button
+            <TextView
                 android:id="@id/actionbar_right_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -42,8 +39,9 @@
                 android:gravity="center"
                 android:minHeight="@dimen/abc_action_bar_default_height_material"
                 android:minWidth="@dimen/abc_action_bar_default_height_material"
+                android:clickable="true"
                 android:padding="@dimen/abc_dropdownitem_text_padding_left"
-                android:textColor="?titleColor"
+                android:textColor="@color/blue"
                 android:textSize="@dimen/abc_text_size_menu_material" />
         </LinearLayout>
 
@@ -53,7 +51,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/abc_action_bar_default_height_material"
-            android:layout_marginRight="@dimen/abc_action_bar_stacked_max_height"
+            android:layout_marginRight="@dimen/abc_action_bar_default_height_material"
             android:gravity="center"
             android:maxLines="1"
             android:maxEms="8"
@@ -67,6 +65,10 @@
             android:text="Title"
             android:textColor="?titleColor"
             android:textSize="@dimen/abc_text_size_title_material" />
+        <View
+            android:id="@+id/v_title_line"
+            style="@style/line"
+            android:layout_gravity="bottom" />
     </FrameLayout>
 
 </merge>

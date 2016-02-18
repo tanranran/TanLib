@@ -4,21 +4,40 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
         android:id="@id/iv_empty_null"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher"/>
+        android:src="@mipmap/error"/>
 
     <TextView
         android:id="@id/tv_empty_null"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         android:text="@string/empty_null"/>
-
+    <cn.tan.lib.widget.ButtonCustom
+        android:id="@id/btn_empty_null"
+        app:radius="3dp"
+        app:press_color="@color/default_shadow_color"
+        app:unpress_color="@color/white"
+        app:dashed="true"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:visibility="gone"
+        app:dashed_gap="0dp"
+        app:dashed_height="1px"
+        android:textColor="@color/blue"
+        app:dashed_press_color="@color/blue"
+        app:dashed_unpress_color="@color/blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text=""/>
 </LinearLayout>
