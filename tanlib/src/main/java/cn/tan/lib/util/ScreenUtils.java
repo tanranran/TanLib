@@ -1,17 +1,15 @@
 package cn.tan.lib.util;
 
 import android.animation.ValueAnimator;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
-import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-  
+
 /** 
  * 获得屏幕相关的辅助类 
  *  
@@ -54,40 +52,8 @@ public class ScreenUtils
         DisplayMetrics outMetrics = new DisplayMetrics();  
         wm.getDefaultDisplay().getMetrics(outMetrics);  
         return outMetrics.heightPixels;  
-    }  
-  
-    /** 
-     * 获得状态栏的高度 
-     *  
-     * @param context 
-     * @return 
-     */  
-    public static int getStatusHeight(Context context)  
-    {  
-  
-        int statusHeight = -1;  
-        try  
-        {  
-            Class<?> clazz = Class.forName("com.android.internal.R$dimen");  
-            Object object = clazz.newInstance();  
-            int height = Integer.parseInt(clazz.getField("status_bar_height")  
-                    .get(object).toString());  
-            statusHeight = context.getResources().getDimensionPixelSize(height);  
-        } catch (Exception e)  
-        {  
-            e.printStackTrace();  
-        }  
-        return statusHeight;
     }
 
-    public static int getStatusBarHeight(Context context) {
-        int result = 0;
-        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = context.getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
-    }
 
     /**
      * 状态栏高度算法
@@ -123,20 +89,10 @@ public class ScreenUtils
                 e.printStackTrace();
             }
         }
+        if(statusHeight==0){
+            statusHeight= DensityUtils.dp2px(activity,25);
+        }
         return statusHeight;
-    }
-
-    /**
-     * 获取状态栏高度
-     *
-     * @param activity
-     * @return
-     */
-    @TargetApi(Build.VERSION_CODES.CUPCAKE)
-    public static int getStatusBarHeight(Activity activity) {
-        Rect frame = new Rect();
-        activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
-        return frame.top;
     }
 
     /**
@@ -199,7 +155,7 @@ public class ScreenUtils
      * @param to>=0&&to<=1.0f     窗口背景变暗 dimBackground(1.0f,0.5f);
      *                            窗口背景变亮 dimBackground(0.5f,1.0f);
      */
-    private void dimBackground(final Activity activity, final float from, final float to) {
+    public static void dimBackground(final Activity activity, final float from, final float to) {
         final Window window = activity.getWindow();
         ValueAnimator valueAnimator = ValueAnimator.ofFloat(from, to);
         valueAnimator.setDuration(500);

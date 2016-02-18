@@ -72,7 +72,6 @@ public class BaseActivity extends AppCompatActivity{
 	}
 	public void setSystemBarTransparent() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-			rootLayout.setFitsSystemWindows(false);
 			rootLayout.statusBar.setVisibility(View.GONE);
 		}
 	}

@@ -16,8 +16,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
- * Created by tanranran on 16/2/18.
- * 沉浸式工具
+ * Created by tanranran on 16/2/18-16:47.
  */
 public final class StatusBarUtils {
 

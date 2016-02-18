@@ -58,7 +58,8 @@ public class BaseRootLayout extends LinearLayout{
 			actionBarLLayout.setVisibility(GONE);
 		}
 	}
-	protected void hideOrShowToolbar() {
+	//隐藏或者显示ActionBar
+	protected void hideOrShowActionBar() {
 		ValueAnimator.AnimatorUpdateListener updateListener = new ValueAnimator.AnimatorUpdateListener() {
 			public void onAnimationUpdate(ValueAnimator animation) {
 				int b = (int) ((Float.parseFloat(animation.getAnimatedValue().toString()) * actionBarLLayout.getHeight()));

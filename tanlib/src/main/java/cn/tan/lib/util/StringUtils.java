@@ -1,5 +1,9 @@
 package cn.tan.lib.util;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,7 +36,18 @@ public class StringUtils {
         }
         return mobile;
     }
-
+    public static String phonePrivate(String str){
+        try{
+            return str.substring(0,str.length()-(str.substring(3)).length())+"****"+str.substring(7);
+        }catch (Exception e){
+            e.printStackTrace();
+            return str;
+        }
+    }
+    public static boolean apkValidate(String url) {
+        String regEx = "^.*\\.apk$";// 这里是正则表达式
+        return validateString(url, regEx);
+    }
     // 匹配输入数据类型
     public static boolean matchCheck(String ins, int type) {
         String pat = "";
@@ -157,7 +172,22 @@ public class StringUtils {
             return 100 + "米内";
         }
     }
+    public static String getMapDistance(double distance){
+        String str=distance+"";
+        try{
+            DecimalFormat df=new DecimalFormat(".##");
+            if(distance<0){
+                return "";
+            }else if(distance<1000){
+                return ">"+df.format(distance)+"米";
+            }else{
+                return ">"+df.format(distance/1000)+"公里";
+            }
+        }catch (Exception e){
 
+        }
+        return  ">"+str;
+    }
     /**
      * 电话号码验证 最大输入11位
      *
@@ -186,16 +216,137 @@ public class StringUtils {
      * @Description:把list转换为一个用逗号分隔的字符串
      */
     public static String listToString(List list) {
+        return listToString(list, ",");
+    }
+    public static String listToString(List list,String split) {
         StringBuilder sb = new StringBuilder();
         if (list != null && list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
                 if (i < list.size() - 1) {
-                    sb.append(list.get(i) + ",");
+                    sb.append(list.get(i) + split);
                 } else {
                     sb.append(list.get(i));
                 }
             }
         }
         return sb.toString();
+    }
+    public static List<String> StringToList(String str){
+        return StringToList(str, ",");
+    }
+    public static List<String> StringToList(String str,String split){
+        List<String> list=new ArrayList<>();
+        try{
+            if(!StringUtils.isEmpty(str)){
+                for(int i=0;i<str.split(split).length;i++){
+                    list.add(str.split(split)[i]);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return list;
+    }
+    /**
+     * decode Unicode string
+     *
+     * @param s
+     * @return
+     */
+    public static String decodeUnicodeStr(String s) {
+        StringBuilder sb = new StringBuilder(s.length());
+        char[] chars = s.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            char c = chars[i];
+            if (c == '\\' && chars[i + 1] == 'u') {
+                char cc = 0;
+                for (int j = 0; j < 4; j++) {
+                    char ch = Character.toLowerCase(chars[i + 2 + j]);
+                    if ('0' <= ch && ch <= '9' || 'a' <= ch && ch <= 'f') {
+                        cc |= (Character.digit(ch, 16) << (3 - j) * 4);
+                    } else {
+                        cc = 0;
+                        break;
+                    }
+                }
+                if (cc > 0) {
+                    i += 5;
+                    sb.append(cc);
+                    continue;
+                }
+            }
+            sb.append(c);
+        }
+        return sb.toString();
+    }
+
+    /**
+     * encode Unicode string
+     *
+     * @param s
+     * @return
+     */
+    public static String encodeUnicodeStr(String s) {
+        StringBuilder sb = new StringBuilder(s.length() * 3);
+        for (char c : s.toCharArray()) {
+            if (c < 256) {
+                sb.append(c);
+            } else {
+                sb.append("\\u");
+                sb.append(Character.forDigit((c >>> 12) & 0xf, 16));
+                sb.append(Character.forDigit((c >>> 8) & 0xf, 16));
+                sb.append(Character.forDigit((c >>> 4) & 0xf, 16));
+                sb.append(Character.forDigit((c) & 0xf, 16));
+            }
+        }
+        return sb.toString();
+    }
+    /**
+     * url is usable
+     *
+     * @param url
+     * @return
+     */
+    public static boolean isUrlUsable(String url) {
+        if (isEmpty(url)) {
+            return false;
+        }
+
+        URL urlTemp = null;
+        HttpURLConnection connt = null;
+        try {
+            urlTemp = new URL(url);
+            connt = (HttpURLConnection) urlTemp.openConnection();
+            connt.setRequestMethod("HEAD");
+            int returnCode = connt.getResponseCode();
+            if (returnCode == HttpURLConnection.HTTP_OK) {
+                return true;
+            }
+        } catch (Exception e) {
+            return false;
+        } finally {
+            connt.disconnect();
+        }
+        return false;
+    }
+    /**
+     * is url
+     *
+     * @param url
+     * @return
+     */
+    public static boolean isUrl(String url) {
+        if(StringUtils.isEmpty(url)){
+            return false;
+        }else{
+            Pattern pattern = Pattern.compile("^([hH][tT]{2}[pP]://|[hH][tT]{2}[pP][sS]://)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~\\/])+$");
+            return pattern.matcher(url).matches();
+        }
+    }
+    public static String splitEnd(String str,String split){
+        if(str.length()>0&&(str.charAt(str.length() - 1)+"").equals(split)){
+            return  str.split(split,str.length()-1)[0];
+        }
+        return str;
     }
 }

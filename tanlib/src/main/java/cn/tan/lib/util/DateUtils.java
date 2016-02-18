@@ -4,6 +4,7 @@ package cn.tan.lib.util;
 import com.orhanobut.logger.Logger;
 
 import java.text.DateFormat;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,12 +17,20 @@ public class DateUtils {
 
     private static final String TAG = "DateUtil";
 
+    public static final String yyyymmddhhmm0="yyyy-MM-dd";
+    public static final String yyyymmddhhmm1="yyyy-MM-dd HH:mm";
+    public static final String yyyymmddhhmmss="yyyyMMddHHmmss";
+    public static final String yyyymmddhhmmss2="yyyy-MM-dd-HH:mm";
     public static Calendar calendar = null;
 
     public static DateFormat dateFormat = null;
 
     public static Date date = null;
 
+    public static String getTime(Date date,String pattern) {
+        dateFormat = new SimpleDateFormat(pattern);
+        return dateFormat.format(date);
+    }
     /**
      * 功能描述：格式化日期
      *
@@ -32,12 +41,9 @@ public class DateUtils {
     public static Date parseDate(String dateStr, String format) {
         try {
             dateFormat = new SimpleDateFormat(format);
-            String dt = dateStr.replaceAll("-", "/");
-            if ((!dt.equals("")) && (dt.length() < format.length())) {
-                dt += format.substring(dt.length()).replaceAll("[YyMmDdHhSs]", "0");
-            }
-            date = dateFormat.parse(dt);
+            date = dateFormat.parse(dateStr);
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return date;
     }
@@ -134,15 +140,40 @@ public class DateUtils {
      * @return
      */
     public static String getWeekDayString(Date date) {
-        String weekString = "";
-        final String dayNames[] = {"周日", "周一", "周二", "周三", "周四", "周五", "周六"};
+        String week = "周一";
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        weekString = dayNames[dayOfWeek - 1];
-        return weekString;
+        switch (dayOfWeek){
+            case  Calendar.MONDAY:
+                week="周一";
+                break;
+            case  Calendar.TUESDAY :
+                week="周二";
+                break;
+            case  Calendar.WEDNESDAY :
+                week="周三";
+                break;
+            case  Calendar.THURSDAY:
+                week="周四";
+                break;
+            case  Calendar.FRIDAY :
+                week="周五";
+                break;
+            case  Calendar.SATURDAY :
+                week="周六";
+                break;
+            case  Calendar.SUNDAY :
+                week="周日";
+                break;
+        }
+        return week;
     }
-
+    public static Date strToDate(int year,int month,int day) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        ParsePosition pos = new ParsePosition(0);
+        return formatter.parse(year+"-"+month+"-"+day, pos);
+    }
     /**
      * 毫秒转日期Date
      *
@@ -194,7 +225,7 @@ public class DateUtils {
         month--; // following the 0-based rule
         Calendar cal = new GregorianCalendar(year, month, day);
 
-        java.util.Date today = new java.util.Date();
+        Date today = new Date();
 
         SimpleDateFormat sdfYear = new SimpleDateFormat("yyyy");
         int intYear = Integer.parseInt(sdfYear.format(today));

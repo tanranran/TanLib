@@ -83,10 +83,10 @@ public class ActivityUtil {
 	/**
 	 * 判断activity有没有打开
 	 * 
-	 * @param activity
+	 * @param cls
 	 * @return
 	 */
-	public boolean getActivty(Class<?> cls) {
+	public boolean getActivity(Class<?> cls) {
 		if (activityList == null || activityList.isEmpty())
 			return false;
 		for (Activity activity : activityList) {
@@ -137,10 +137,10 @@ public class ActivityUtil {
 	 * 
 	 * @return
 	 */
-	public int getActivitysCount() {
+	public int getActivityCount() {
 		return activityList.size();
 	}
-	public void exit() {
+	public void exit(boolean isExit) {
 		try {
 			for (Activity activity : activityList) {
 				try {
@@ -154,8 +154,10 @@ public class ActivityUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			android.os.Process.killProcess(android.os.Process.myPid());
-			System.exit(0);
+			if(isExit){
+				android.os.Process.killProcess(android.os.Process.myPid());
+				System.exit(0);
+			}
 		}
 	}
 }

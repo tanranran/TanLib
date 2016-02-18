@@ -1,13 +1,12 @@
 package cn.tan.lib.util;
 
 import android.app.AlertDialog.Builder;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
+import android.telephony.gsm.GsmCellLocation;
 
 import com.orhanobut.logger.Logger;
 
@@ -59,7 +58,7 @@ public class NetUtils {
 			Logger.d("网络连接成功" + networkState);
 		} else {
 			Logger.d("手机没有任何的网络");
-			networkState = Constant.NOT_CONNECT;
+			networkState = Constant.NET_NO_CONNECT;
 		}
 		return networkState;
 	}
@@ -105,10 +104,7 @@ public class NetUtils {
 				for (Enumeration<InetAddress> enumIpAddr = intf
 						.getInetAddresses(); enumIpAddr.hasMoreElements();) {
 					InetAddress inetAddress = enumIpAddr.nextElement();
-					if (!inetAddress.isLoopbackAddress()
-							&& inetAddress instanceof Inet4Address) {
-						// if (!inetAddress.isLoopbackAddress() && inetAddress
-						// instanceof Inet6Address) {
+					if(!inetAddress.isLoopbackAddress() &&(inetAddress instanceof Inet4Address)){
 						return inetAddress.getHostAddress().toString();
 					}
 				}
@@ -140,7 +136,7 @@ public class NetUtils {
 		builder.setTitle("网络设置提示").setMessage("请检查你的网络连接")
 				.setPositiveButton("设置", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
-						showSystemSetting(context);
+						IntentUtil.showWiFiSetting(context);
 					}
 				})
 				.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -150,20 +146,27 @@ public class NetUtils {
 				}).show();
 	}
 
-	public static void showSystemSetting(Context context) {
-		Intent intent = null;
-		// 判断手机系统的版本 即API大于10 就是3.0或以上版本
-		if (android.os.Build.VERSION.SDK_INT > 10) {
-			intent = new Intent(
-					android.provider.Settings.ACTION_WIRELESS_SETTINGS);
-		} else {
-			intent = new Intent();
-			ComponentName component = new ComponentName("com.android.settings",
-					"com.android.settings.WirelessSettings");
-			intent.setComponent(component);
-			intent.setAction("android.intent.action.VIEW");
+	public static String getMobilCellLocation(Context context){
+		String mMobilCellLocation="null";
+		try{
+			TelephonyManager manager  =  (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+			GsmCellLocation location = (GsmCellLocation) manager.getCellLocation();
+			int mcc=0,mnc=0,lac=0,cell_id=0;
+			String operator = manager.getNetworkOperator();
+			if(operator!=null){
+				mcc = Integer.parseInt(operator.substring(0, 3));
+				mnc = Integer.parseInt(operator.substring(3));
+			}
+			if(location!=null){
+				lac = location.getLac();
+				cell_id = location.getCid();
+			}
+			mMobilCellLocation=mcc+"|"+mnc+"|"+lac+"|"+cell_id;
+		}catch (Exception e){
+			e.printStackTrace();
 		}
-		context.startActivity(intent);
+
+		return mMobilCellLocation;
 	}
 
 	/*

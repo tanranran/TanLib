@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,22 +12,25 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
 import android.widget.ImageView;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 
 public class ImageUtil {
 
@@ -45,7 +49,6 @@ public class ImageUtil {
 
         Bitmap bitmap = Bitmap.createBitmap((int) width, (int) height, config);
         bitmap.eraseColor(Color.WHITE);
-
         Canvas canvas = new Canvas(bitmap);
         int left = view.getLeft();
         int top = view.getTop();
@@ -55,16 +58,12 @@ public class ImageUtil {
         }
         int status = canvas.save();
         canvas.translate(-left, -top);
-
         float scale = width / view.getWidth();
         canvas.scale(scale, scale, left, top);
-
         view.draw(canvas);
         canvas.restoreToCount(status);
-
         Paint alphaPaint = new Paint();
         alphaPaint.setColor(Color.TRANSPARENT);
-
         canvas.drawRect(0f, 0f, 1f, height, alphaPaint);
         canvas.drawRect(width - 1f, 0f, width, height, alphaPaint);
         canvas.drawRect(0f, 0f, width, 1f, alphaPaint);
@@ -74,109 +73,50 @@ public class ImageUtil {
         return bitmap;
     }
 
-    public static boolean save(Bitmap orgBitmap, String filePath) {
-        if (orgBitmap == null) {
-            return false;
-        }
-        if (filePath == null) {
-            return false;
-        }
-        boolean isSaveSuccess = true;
-        int width = orgBitmap.getWidth();
-        int height = orgBitmap.getHeight();
-        int dummySize = 0;
-        byte[] dummyBytesPerRow = null;
-        boolean hasDummy = false;
-        if (isBmpWidth4Times(width)) {
-            hasDummy = true;
-            dummySize = 4 - width % 4;
-            dummyBytesPerRow = new byte[dummySize * 3];
-            for (int i = 0; i < dummyBytesPerRow.length; i++) {
-                dummyBytesPerRow[i] = -1;
+    public static void saveImageToSD( Bitmap bitmap,String filePath,int quality){
+        try{
+            if (bitmap != null) {
+                FileOutputStream fos = new FileOutputStream(filePath);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, quality, stream);
+                byte[] bytes = stream.toByteArray();
+                fos.write(bytes);
+                fos.close();
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        int[] pixels = new int[width * height];
-        int imageSize = pixels.length * 3 + height * dummySize * 3;
-        int imageDataOffset = 54;
-        int fileSize = imageSize + imageDataOffset;
-        orgBitmap.getPixels(pixels, 0, width, 0, 0, width, height);
-        ByteBuffer buffer = ByteBuffer.allocate(fileSize);
+    }
+
+    public static String saveImage(Context context, Bitmap bitmap){
+        return  saveImage(context, null, FileUtil.getPhotoName("jpg"), bitmap, 100);
+    }
+    public static String saveImage(Context context, Bitmap bitmap,int quality){
+        return  saveImage(context, null, FileUtil.getPhotoName("jpg"), bitmap, quality);
+    }
+    public static String saveImage(Context context, Bitmap bitmap,String fileName){
+        return  saveImage(context, null,fileName, bitmap, 100);
+    }
+    public static String saveImage(Context context, String path,String fileName, Bitmap bitmap, int quality){
+        File file = null;
+        if (path == null) {
+            file = FileUtil.getCameraPath(context, fileName);
+        }
+        String mPath = null;
+        if (!file.exists())
+            file.mkdirs();
         try {
-            buffer.put((byte) 66);
-            buffer.put((byte) 77);
-            buffer.put(writeInt(fileSize));
-            buffer.put(writeShort((short) 0));
-            buffer.put(writeShort((short) 0));
-            buffer.put(writeInt(imageDataOffset));
-            buffer.put(writeInt(40));
-            buffer.put(writeInt(width));
-            buffer.put(writeInt(height));
-            buffer.put(writeShort((short) 1));
-            buffer.put(writeShort((short) 24));
-            buffer.put(writeInt(0));
-            buffer.put(writeInt(imageSize));
-            buffer.put(writeInt(0));
-            buffer.put(writeInt(0));
-            buffer.put(writeInt(0));
-            buffer.put(writeInt(0));
-            int row = height;
-            int col = width;
-            int startPosition = 0;
-            int endPosition = 0;
-            while (row > 0) {
-                startPosition = (row - 1) * col;
-                endPosition = row * col;
-                for (int i = startPosition; i < endPosition; i++) {
-                    buffer.put(write24BitForPixcel(pixels[i]));
-                    if ((hasDummy) &&
-                            (isBitmapWidthLastPixcel(width, i))) {
-                        buffer.put(dummyBytesPerRow);
-                    }
-                }
-                row--;
-            }
-            FileOutputStream fos = new FileOutputStream(filePath);
-            fos.write(buffer.array());
-            fos.close();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-            isSaveSuccess = false;
+            mPath = file.getPath();
+            FileOutputStream fileOutputStream = new FileOutputStream(mPath);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, fileOutputStream);
+            fileOutputStream.flush();
+            fileOutputStream.close();
+            System.out.println("saveBmp is here" + mPath);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return isSaveSuccess;
+        return mPath;
     }
-
-    private static boolean isBitmapWidthLastPixcel(int width, int i) {
-        return (i > 0) && (i % (width - 1) == 0);
-    }
-
-    private static boolean isBmpWidth4Times(int width) {
-        return width % 4 > 0;
-    }
-
-    private static byte[] writeInt(int value) throws IOException {
-        byte[] b = new byte[4];
-        b[0] = ((byte) (value & 0xFF));
-        b[1] = ((byte) ((value & 0xFF00) >> 8));
-        b[2] = ((byte) ((value & 0xFF0000) >> 16));
-        b[3] = ((byte) ((value & 0xFF000000) >> 24));
-        return b;
-    }
-
-    private static byte[] write24BitForPixcel(int value) throws IOException {
-        byte[] b = new byte[3];
-        b[0] = ((byte) (value & 0xFF));
-        b[1] = ((byte) ((value & 0xFF00) >> 8));
-        b[2] = ((byte) ((value & 0xFF0000) >> 16));
-        return b;
-    }
-
-    private static byte[] writeShort(short value) throws IOException {
-        byte[] b = new byte[2];
-        b[0] = ((byte) (value & 0xFF));
-        b[1] = ((byte) ((value & 0xFF00) >> 8));
-        return b;
-    }
-
     /**
      * 从文件中获取图片
      *
@@ -233,6 +173,7 @@ public class ImageUtil {
             be = 1;
         }
         newOpts.inSampleSize = be;// 设置缩放比例
+        newOpts.inPreferQualityOverSpeed = true;
         newOpts.inPreferredConfig = config;
         bitmap = BitmapFactory.decodeFile(srcPath, newOpts);
         return bitmap;// 压缩好比例大小后再进行质量压缩
@@ -270,6 +211,7 @@ public class ImageUtil {
         if (be <= 0)
             be = 1;
         newOpts.inSampleSize = be;// 设置缩放比例
+        newOpts.inPreferQualityOverSpeed = true;
         // 重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
         isBm = new ByteArrayInputStream(baos.toByteArray());
         bitmap = BitmapFactory.decodeStream(isBm, null, newOpts);
@@ -407,6 +349,36 @@ public class ImageUtil {
         }
         return null;
     }
+    public static File saveImageToGallery(Context context, Bitmap bmp) {
+        // 首先保存图片
+        File appDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+        if (!appDir.exists()) {
+            appDir.mkdir();
+        }
+        String fileName = System.currentTimeMillis() + ".jpg";
+        File file = null;
+        try {
+            file=new File(appDir, fileName);
+            FileOutputStream fos = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // 其次把文件插入到系统图库
+        try {
+            MediaStore.Images.Media.insertImage(context.getContentResolver(),
+                    file.getAbsolutePath(), fileName, null);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        // 最后通知图库更新
+        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + file)));
+        return file;
+    }
     /*
      * Bitmap转换成byte[]
 	 *
@@ -506,28 +478,52 @@ public class ImageUtil {
         context.sendBroadcast(intent);
     }
 
-    private static void recycleImageViewBitMap(ImageView imageView) {
+    public static void recycleImageViewBitMap(ImageView imageView) {
         if (imageView != null) {
             BitmapDrawable bd1 = (BitmapDrawable) imageView.getDrawable();
             BitmapDrawable bd2 = (BitmapDrawable) imageView.getBackground();
             rceycleBitmapDrawable(bd1);
             rceycleBitmapDrawable(bd2);
+            imageView=null;
         }
     }
 
-    private static void rceycleBitmapDrawable(BitmapDrawable bitmapDrawable) {
+    public static void rceycleBitmapDrawable(BitmapDrawable bitmapDrawable) {
         if (bitmapDrawable != null) {
             Bitmap bitmap = bitmapDrawable.getBitmap();
-            rceycleBitmap(bitmap);
+            recycleBitmap(bitmap);
         }
         bitmapDrawable = null;
     }
 
-    private static void rceycleBitmap(Bitmap bitmap) {
-        if (bitmap != null && !bitmap.isRecycled()) {
-            bitmap.recycle();
-            bitmap = null;
+    public static void recycleBitmap(Bitmap bitmap) {
+        try{
+            if (bitmap != null && !bitmap.isRecycled()) {
+                bitmap.recycle();
+                bitmap = null;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
+    }
+
+    public static Drawable tintDrawable(Drawable drawable, ColorStateList colors) {
+        final Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
+        DrawableCompat.setTintList(wrappedDrawable, colors);
+        return wrappedDrawable;
+    }
+
+    public static Bitmap drawableToBitmap(Drawable drawable) {
+        Bitmap bitmap = Bitmap.createBitmap(
+                drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(),
+                drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888: Bitmap.Config.RGB_565);
+        Canvas canvas = new Canvas(bitmap);
+        //canvas.setBitmap(bitmap);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        drawable.draw(canvas);
+        return bitmap;
+
     }
 
     /**
@@ -558,4 +554,6 @@ public class ImageUtil {
         bmp.eraseColor(color);
         return bmp;
     }
+
+
 }

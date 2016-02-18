@@ -105,6 +105,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         actionBar("测试");
+        setSystemBarTransparent();
         getView(R.id.btn).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 

@@ -42,6 +42,7 @@ public class InputUtil {
 			if (mActivity.getCurrentFocus() != null)
 				((InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(mActivity.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 		}
+		mActivity=null;
 	}
 	public void hide(View view) {
 		mInputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);

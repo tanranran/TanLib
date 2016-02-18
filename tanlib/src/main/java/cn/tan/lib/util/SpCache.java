@@ -8,16 +8,27 @@ import android.preference.PreferenceManager;
 
 import cn.tan.lib.base.BaseApplication;
 
-public final class PreferencesUtils {
+public final class SpCache {
 
-	private static final String PERFERENCE="XMPP";
+	private static final String PERFERENCE="SpCache";
 	private SharedPreferences mPreference;
+	private static SpCache INSTANCE;
 
-	public PreferencesUtils() {
+	public static SpCache init(Context context, String prefFileName) {
+		if (INSTANCE == null) {
+			synchronized (SpCache.class) {
+				if (INSTANCE == null) {
+					INSTANCE = new SpCache(context, prefFileName);
+				}
+			}
+		}
+		return INSTANCE;
+	}
+	public SpCache() {
 		this(BaseApplication.getInstance(), PERFERENCE);
 	}
 
-	public PreferencesUtils(final Context context, String sharedPreferencesName) {
+	public SpCache(final Context context, String sharedPreferencesName) {
 		this.mPreference = context.getApplicationContext().getSharedPreferences(PERFERENCE, Context.MODE_PRIVATE);
 	}
 
@@ -33,8 +44,8 @@ public final class PreferencesUtils {
 	public static String getString(String key, String defValue) {
 		if (BaseApplication.getInstance() != null) {
 			try {
-				return DESUtil.decrypt(PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance()).getString(key, defValue), DESUtil.KEY_NAME);
-//				return PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance()).getString(key, defValue);
+//				return DESUtil.decrypt(PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance()).getString(key, defValue), DESUtil.KEY_NAME);
+				return PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance()).getString(key, defValue);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -163,7 +174,7 @@ public final class PreferencesUtils {
 			try {
 				SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
 				Editor editor = sharedPreferences.edit();
-				editor.putString(key, DESUtil.encrypt(value, DESUtil.KEY_NAME));
+//				editor.putString(key, DESUtil.encrypt(value, DESUtil.KEY_NAME));
 				editor.commit();
 			} catch (Exception e) {
 				e.printStackTrace();

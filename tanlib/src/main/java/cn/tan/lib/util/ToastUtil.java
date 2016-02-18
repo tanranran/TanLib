@@ -22,7 +22,9 @@ public class ToastUtil {
 	public static void showToast(String text) {
 		showToast(BaseApplication.getInstance(), Toast.LENGTH_SHORT, text);
 	}
-
+	public static void showToast(Object text) {
+		showToast(BaseApplication.getInstance(), Toast.LENGTH_SHORT, text.toString());
+	}
 	public static void showToast(Context ctx, int resID) {
 		showToast(ctx, Toast.LENGTH_SHORT, resID);
 	}
@@ -37,6 +39,9 @@ public class ToastUtil {
 
 	public static void showLongToast(int resID) {
 		showToast(BaseApplication.getInstance(), Toast.LENGTH_LONG, resID);
+	}
+	public static void showLongToast(Object obj) {
+		showToast(BaseApplication.getInstance(), Toast.LENGTH_LONG, obj.toString());
 	}
 
 	public static void showLongToast(Context ctx, String text) {
@@ -57,24 +62,24 @@ public class ToastUtil {
 
 	/** Toast一个图片 */
 	public static Toast showToastImage(Context ctx, int resID) {
-		final Toast toast = Toast.makeText(ctx, "", Toast.LENGTH_SHORT);
-		View mNextView = toast.getView();
+		mToast = Toast.makeText(ctx, "", Toast.LENGTH_SHORT);
+		View mNextView = mToast.getView();
 		if (mNextView != null)
 			mNextView.setBackgroundResource(resID);
-		toast.setGravity(Gravity.CENTER, 0, 0);
-		toast.show();
-		return toast;
+		mToast.setGravity(Gravity.CENTER, 0, 0);
+		mToast.show();
+		return mToast;
 	}
 
 	public static void showToast(final Context ctx, final int duration,
 			final String text) {
-		mToast = Toast.makeText(ctx, text, duration);
+		initToastAssignment(ctx, text);
 		mToast.show();
 	}
 
 	public static void showToastView(final Context ctx, final int duration,
 			final String text) {
-		mToast = Toast.makeText(ctx, text, duration);
+		initToastAssignment(ctx, text);
 		View view = RelativeLayout.inflate(ctx, R.layout.layout_toast, null);
 		TextView mNextView = (TextView) view.findViewById(R.id.toast_name);
 		mToast.setView(view);
@@ -85,7 +90,7 @@ public class ToastUtil {
 
 	public static void showToast(final Context ctx, final String text,
 			Drawable left, Drawable top, Drawable right, Drawable bottom) {
-		mToast = Toast.makeText(ctx, text, Toast.LENGTH_LONG);
+		initToastAssignment(ctx, text);
 		View view = RelativeLayout.inflate(ctx, R.layout.layout_toast, null);
 		TextView mNextView = (TextView) view.findViewById(R.id.toast_name);
 		mNextView.setCompoundDrawablesWithIntrinsicBounds(left, top, right,bottom);
@@ -94,13 +99,18 @@ public class ToastUtil {
 		mNextView.setText(text);
 		mToast.show();
 	}
-
+	public static void initToastAssignment(final Context ctx, final String text){
+		if(mToast!=null){
+			mToast.cancel();
+		}
+		mToast=Toast.makeText(ctx, text, Toast.LENGTH_LONG);
+	}
 	/** 在UI线程运行弹出 */
 	public static void showToastOnUiThread(final Activity ctx, final String text) {
 		if (ctx != null) {
 			ctx.runOnUiThread(new Runnable() {
 				public void run() {
-					showToast(ctx, text);
+					showLongToast(ctx, text);
 				}
 			});
 		}
