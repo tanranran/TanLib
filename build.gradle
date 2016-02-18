@@ -17,9 +17,3 @@ allprojects {
         jcenter()
     }
 }
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.11'
-}
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}

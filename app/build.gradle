@@ -33,11 +33,6 @@ android {
         abortOnError false
     }
     productFlavors {
-        armv7 {
-            ndk {
-                abiFilter "armeabi-v7a"
-            }
-        }
     }
     dexOptions {
         incremental true //打开dex增量编译
